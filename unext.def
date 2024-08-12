@@ -1,0 +1,26 @@
+Bootstrap: docker
+From: python:3.9.18
+
+%post
+    export DEBIAN_FRONTEND=noninteractive
+    apt update -y
+
+    
+    git clone https://github.com/alvinkimbowa/UNeXt-pytorch.git
+    cd UNeXt-pytorch/
+
+    pip install -r requirements.txt
+
+%environment
+
+    
+%runscript
+
+
+%files
+    
+
+
+%labels
+    author alvinkimbowa
+    version 1.0

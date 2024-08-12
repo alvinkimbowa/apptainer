@@ -1,0 +1,34 @@
+Bootstrap: docker
+From: python:3.9.18
+
+%files
+    /home/alvinbk/project/mae_hugging_face/requirements.txt /
+    /home/alvinbk/project/mae_hugging_face/run_mae.py /
+
+%post
+    apt-get -y update
+
+    # Set up required packages
+    pip install -r requirements.txt
+    
+
+%environment
+    export HF_HOME=/scratch/st-ilker-1/alvin/huggingface
+
+  
+%runscript
+
+
+%files
+    
+
+
+%labels
+    author alvinkimbowa
+    version 1.0
+
+%help
+    This container is set up to run masked autoencoder by hugging face
+    
+
+%test

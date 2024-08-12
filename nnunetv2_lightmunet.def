@@ -1,0 +1,57 @@
+Bootstrap: docker
+From: python:3.10
+
+%post
+    echo "Started post script"
+
+    export DEBIAN_FRONTEND=noninteractive
+    
+    apt update -y
+
+    # Check python and pip version
+    python3 --version
+    pip --version
+    python3 -c "print('Hello World!')"
+
+    apt install -y wget
+    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
+    mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
+    wget https://developer.download.nvidia.com/compute/cuda/12.6.0/local_installers/cuda-repo-ubuntu2204-12-6-local_12.6.0-560.28.03-1_amd64.deb
+    dpkg -i cuda-repo-ubuntu2204-12-6-local_12.6.0-560.28.03-1_amd64.deb
+    cp /var/cuda-repo-ubuntu2204-12-6-local/cuda-*-keyring.gpg /usr/share/keyrings/
+    apt update
+    apt -y install cuda-toolkit-12-6
+    
+    pip install --upgrade pip
+    pip install wheel
+    pip install packaging
+    pip install torch==2.1.2 torchvision==0.16.2 --index-url https://download.pytorch.org/whl/cu118
+    pip install causal-conv1d==1.1.0
+    pip install mamba-ssm==1.1.1
+
+    # Install LighMU-Net
+    apt install git -y
+    git clone https://github.com/alvinkimbowa/LightM-UNet.git
+    pip install LightM-UNet/lightm-unet/.
+
+    # Test if installation was successful
+    python3 -c "import torch, mamba_ssm"
+
+%environment
+
+    
+%runscript
+
+
+%files
+    
+
+
+%labels
+    author alvinkimbowa
+    version 1.0
+
+%help
+    
+
+%test

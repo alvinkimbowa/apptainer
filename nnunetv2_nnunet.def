@@ -1,0 +1,41 @@
+Bootstrap: docker
+From: python:3.9.18
+
+%post
+    export DEBIAN_FRONTEND=noninteractive
+    apt -y update
+    
+    pip install opencv-python
+    
+    # Set up nnUNet packages
+    pip install torch torchvision torchaudio
+    
+    git clone https://github.com/alvinkimbowa/nnUNet.git
+    pip install nnUNet/.
+    pip install --upgrade git+https://github.com/FabianIsensee/hiddenlayer.git
+
+%environment
+    
+    
+%runscript
+
+
+%files
+    
+
+
+%labels
+    author alvinkimbowa
+    version 1.0
+
+%help
+    This container is set up to run nnUNet
+    This is how you use this container
+    Shell into the container and plan and preprocess the dataset
+    nnUNetv2_plan_and_preprocess -d DATASET_ID --verify_dataset_integrity
+    
+    Then create a bash file do the training with this command below
+    nnUNetv2_train DATASET_NAME_OR_ID UNET_CONFIGURATION FOLD [additional options, see -h]
+    nnUNetv2_train DATASET_NAME_OR_ID UNET_CONFIGURATION FOLD --val --npz
+
+%test

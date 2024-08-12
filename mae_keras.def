@@ -1,0 +1,33 @@
+Bootstrap: docker
+From: python:3.9.18
+
+%files
+    /home/alvinbk/project/mae_keras/requirements.txt /
+
+
+%post
+    apt-get -y update
+    
+    # Set up MAE required packages
+    pip install -r requirements.txt
+
+
+%environment
+    
+    
+%runscript
+
+
+%files
+    
+
+
+%labels
+    author alvinkimbowa
+    version 1.0
+
+%help
+    This container is set up to run masked autoencoder by keras_team
+    This is how you use this container
+    
+%test

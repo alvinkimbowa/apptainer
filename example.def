@@ -1,0 +1,50 @@
+Bootstrap: docker
+From: ubuntu:22.04
+
+%post
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get -y update
+    apt-get -y install python3.10
+    
+    # Set up nnUNet packages
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+    pip install nnunetv2
+    pip install --upgrade git+https://github.com/FabianIsensee/hiddenlayer.git
+
+
+%environment
+    export nnUNet_raw="/home/alvinbk/project/ai_ready_datasets"
+    export nnUNet_preprocessed="/home/alvinbk/scratch/nnUNet/nnUNet_preprocessed"
+    export nnUNet_results="/home/alvinbk/scratch/nnUNet/nnUNet_results"
+
+
+%runscript
+    nUNetv2_train 32 2d 0 &
+    nnUNetv2_train 32 2d 1 &
+    nnUNetv2_train 32 2d 2 &
+    nnUNetv2_train 32 2d 3 &
+    nnUNetv2_train 32 2d 4 &
+    nnUNetv2_train 32 2d all
+
+
+%files
+    # /home/alvinbk/sample_file.txt /alvin
+
+
+%labels
+    author alvinkimbowa
+    version 1.0
+
+%help
+    this is how you run the container
+    and you do this
+    and that
+
+    see also these
+
+#%test
+    python3 --version
+    python3 -c "import nnunetv2; print("successfully imported nnunetv2")"
+    nnUNetv2_train -h
